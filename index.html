@@ -5,33 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday!</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --primary: #d65a77;
+            --primary-hover: #b5425c;
+            --text-primary: #d65a77;
+            --bg-gradient: linear-gradient(135deg, #fdf0f3 0%, #fbe4eb 100%);
+            --env-base: #fcd34d;
+            --env-flap: #fbbf24;
+            --env-body: #fde68a;
+            --balloon-1: #fca5a5;
+            --balloon-2: #a7f3d0;
+            --balloon-3: #bfdbfe;
+            --balloon-4: #ddd6fe;
+
+            /* Dynamic Cake Theme Variables */
+            --cake-top-bg: #f9c2ff;
+            --cake-top-border: #e8a3ee;
+            --cake-bottom-bg: #ff99c8;
+            --cake-bottom-border: #e67bb0;
+            --cake-dots: #ffffff;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #fdf0f3;
+            background: var(--bg-gradient);
             overflow: hidden;
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            transition: background 0.8s ease;
         }
+
         .cursive-text {
             font-family: 'Great Vibes', cursive;
         }
         
+        .bg-sparkle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 8s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 0.6; }
+        }
+
         .app-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 100vw;
             height: 100%;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 10;
         }
         
         .step-container {
@@ -44,11 +90,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: #fdf0f3;
-            animation: fadeIn 0.8s ease-in-out;
-            padding: 20px;
-            box-sizing: border-box;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 3vh 4vw;
             text-align: center;
+            overflow-y: auto;
         }
 
         .step-active {
@@ -56,23 +101,59 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
+        .theme-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+        .theme-btn:hover {
+            background-color: var(--primary-hover);
+        }
+        .theme-text {
+            color: var(--text-primary);
+        }
+
+        /* Dynamic Cake Color Classes */
+        .cake-top {
+            background-color: var(--cake-top-bg);
+            border-bottom-color: var(--cake-top-border);
+        }
+        .cake-bottom {
+            background-color: var(--cake-bottom-bg);
+            border-bottom-color: var(--cake-bottom-border);
+        }
+        .cake-dot {
+            background-color: var(--cake-dots);
+        }
+
+        /* Responsive Balloon Elements */
         .balloon {
-            width: 70px;
-            height: 85px;
+            width: clamp(55px, 16vw, 85px);
+            height: clamp(75px, 22vw, 110px);
             border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
             position: relative;
             cursor: pointer;
-            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s, opacity 0.3s;
+            box-shadow: inset -5px -5px 12px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0 auto;
+            animation: floatBalloon 3s infinite ease-in-out alternate;
         }
+
+        .balloon:active {
+            transform: scale(0.9);
+        }
+
+        @keyframes floatBalloon {
+            0% { transform: translateY(0px) rotate(-2deg); }
+            100% { transform: translateY(-10px) rotate(2deg); }
+        }
+
         .balloon::after {
             content: '';
             position: absolute;
@@ -83,76 +164,96 @@
             border-right: 6px solid transparent;
             border-bottom: 10px solid inherit;
         }
+        
         .balloon-string {
             position: absolute;
             bottom: -35px;
             left: 50%;
             width: 2px;
             height: 30px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.15);
         }
 
+        /* Flame Effect */
         .flame {
             width: 16px;
             height: 28px;
-            background: #fca5a5;
+            background: linear-gradient(to top, #ff3300 0%, #ff9900 50%, #ffff66 100%);
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             position: absolute;
             top: -28px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 0 15px #fca5a5, 0 0 25px #fef08a;
-            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 12px #ff3300, 0 0 22px #ff9900, 0 0 32px #ffff66;
+            animation: flicker 0.5s infinite alternate ease-in-out;
             cursor: pointer;
             z-index: 30;
         }
+
         @keyframes flicker {
-            0% { transform: translateX(-50%) scale(1); opacity: 0.9; }
-            100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+            0% { transform: translateX(-50%) scale(1) rotate(-1deg); opacity: 0.9; }
+            100% { transform: translateX(-50%) scale(1.15) rotate(1deg); opacity: 1; }
         }
+
         .blown-out {
-            opacity: 0;
-            animation: none;
-            transition: opacity 0.5s;
+            opacity: 0 !important;
+            animation: none !important;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .smoke {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: rgba(140, 140, 140, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: smokeRise 2s forwards ease-out;
+            z-index: 25;
+        }
+
+        @keyframes smokeRise {
+            0% { opacity: 0.85; transform: translateX(-50%) translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-75px) scale(3.5); filter: blur(5px); }
         }
         
+        /* Polaroids Stack */
         .polaroid-stack {
             position: relative;
-            width: 260px;
-            height: 320px;
+            width: clamp(260px, 80vw, 340px);
+            height: clamp(340px, 50vh, 420px);
             margin: 0 auto;
         }
+
         .polaroid {
             position: absolute;
             width: 100%;
             height: 100%;
             background: white;
-            padding: 12px 12px 40px 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            border-radius: 8px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 12px 12px 50px 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             transform-origin: center;
+            border: 1px solid rgba(0,0,0,0.03);
         }
+
         .polaroid-img {
             flex-grow: 1;
-            background-color: #f3f4f6;
-            border-radius: 4px;
+            background-color: #fafafa;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 5rem;
+            font-size: clamp(3.5rem, 10vw, 5rem);
             overflow: hidden;
-            background-size: cover;
-            background-position: center;
         }
-        .polaroid-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+
         .polaroid-text {
             position: absolute;
             bottom: 10px;
@@ -160,49 +261,59 @@
             width: 100%;
             text-align: center;
             font-family: 'Great Vibes', cursive;
-            font-size: 1.5rem;
-            color: #d65a77;
-        }
-        .swipe-out {
-            transform: translateX(150%) rotate(30deg) !important;
-            opacity: 0;
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            color: var(--text-primary);
         }
 
+        .swipe-out {
+            transform: translateX(180%) rotate(35deg) scale(0.9) !important;
+            opacity: 0 !important;
+        }
+
+        /* ======================================================== */
+        /* STEP 5 ENVELOPE & LETTER STYLES (FROM NEW FILE INTEGRATION) */
+        /* ======================================================== */
         .envelope-container {
             position: relative;
-            width: 320px;
-            height: 220px;
+            width: 85vw;
+            max-width: 450px;
+            height: 250px;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
             margin: 0 auto;
-            background: #fcd34d;
+            background: var(--env-base);
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
+
         .envelope-container:hover {
             transform: scale(1.02);
         }
+
         .envelope-body {
             position: absolute;
             bottom: 0;
             width: 100%;
             height: 100%;
-            background: #fde68a;
+            background: var(--env-body);
             border-radius: 8px;
             z-index: 3;
             clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+            transition: background-color 0.5s ease, opacity 0.8s ease;
         }
+
         .envelope-flap {
             position: absolute;
             top: 0;
             width: 100%;
             height: 60%;
-            background: #fbbf24;
+            background: var(--env-flap);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             z-index: 4;
             transform-origin: top;
-            transition: transform 0.6s, z-index 0s 0.6s;
+            transition: transform 0.6s, z-index 0s 0.6s, background-color 0.5s ease, opacity 0.8s ease;
         }
+
         .letter {
             position: absolute;
             bottom: 10px;
@@ -214,7 +325,7 @@
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 2;
-            transition: transform 0.8s, height 0.8s;
+            transition: transform 0.8s, height 0.8s, bottom 0.8s;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -222,21 +333,24 @@
             align-items: center;
             overflow: hidden;
         }
+
         .letter > * {
             opacity: 0;
             transition: opacity 0.2s;
         }
+
         .open .envelope-flap {
             transform: rotateX(180deg);
             z-index: 1;
             transition: transform 0.6s, z-index 0s 0.3s;
         }
+
         .open .letter {
             transform: translateY(-130px);
-            height: 300px;
+            height: 130%;
             transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s, height 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s;
         }
-        
+
         /* Focus/Read Mode for Envelope */
         .read-mode .envelope-body, 
         .read-mode .envelope-flap {
@@ -246,361 +360,506 @@
         }
 
         .read-mode .letter {
-            transform: translateY(-30px) scale(1.35) !important;
-            height: 380px !important;
+            bottom: 50% !important;
+            transform: translateY(50%) scale(1.1) !important;
+            height: auto !important;
+            min-height: 350px !important;
+            max-height: 85vh !important;
             z-index: 999;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2), 0 0 0 100vw rgba(253, 240, 243, 1) !important;
+            padding: 40px 20px !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2), 0 0 0 100vw var(--bg-gradient) !important;
             border-radius: 12px;
             transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        height 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        bottom 1.2s cubic-bezier(0.2, 0.8, 0.2, 1),
                         box-shadow 1.2s ease, 
                         border-radius 1.2s ease !important;
         }
+
         .read-mode .letter > * {
             opacity: 1;
             transition: opacity 0.6s 1s; 
         }
 
+        @media (min-width: 768px) {
+            .read-mode .letter {
+                transform: translateY(50%) scale(1.2) !important;
+                width: 450px;
+                left: calc(50% - 225px);
+            }
+        }
+
         @media (max-width: 480px) {
             .read-mode .letter {
-                transform: translateY(-15px) scale(1.15) !important;
-                height: 360px !important;
+                transform: translateY(50%) scale(1.05) !important;
             }
+        }
+
+        .petal {
+            position: fixed;
+            background: #fbcfe8;
+            border-radius: 150% 0 150% 0;
+            animation: animatePetal 6s linear forwards;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes animatePetal {
+            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translate(100px, 105vh) rotate(360deg); opacity: 0; }
+        }
+
+        .pop-particle {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: particleFade 0.8s ease-out forwards;
+            z-index: 99;
+        }
+
+        @keyframes particleFade {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
         }
 
         .confetti {
             position: fixed;
             width: 10px;
             height: 10px;
-            background-color: #f00;
             animation: fall linear forwards;
             z-index: 100;
         }
+
         @keyframes fall {
-            to { transform: translateY(100vh) rotate(720deg); }
+            to { transform: translateY(105vh) rotate(720deg); }
         }
     </style>
 </head>
 <body>
 
+<div id="sparkle-container"></div>
+
 <div class="app-container">
 
     <!-- Step 0: Welcome -->
     <div id="step-0" class="step-container step-active">
-        <h1 class="text-4xl md:text-5xl font-semibold mb-4 text-[#d65a77]">
-            Happy Birthday, <br/> <span id="welcome-name" class="cursive-text text-5xl md:text-6xl mt-2 block"></span>
+        <div class="inline-block p-3 sm:p-4 rounded-full bg-white/60 shadow-sm mb-3 sm:mb-4 animate-bounce">
+            <span class="text-3xl sm:text-4xl">🎂</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold mb-3 theme-text tracking-tight">
+            Happy Birthday, <br/> 
+            <span id="welcome-name" class="cursive-text text-5xl sm:text-7xl md:text-8xl mt-1 block"></span>
         </h1>
-        <p class="text-lg md:text-xl mb-12 font-medium text-gray-700">Are you excited for what's next?</p>
+        <p id="welcome-subtext" class="text-sm sm:text-lg md:text-xl mb-8 sm:mb-10 font-medium text-gray-600 px-2"></p>
         
-        <div class="flex gap-6 relative justify-center items-center w-full h-16">
-            <button onclick="nextStep(1)" class="bg-[#d65a77] hover:bg-[#b5425c] text-white px-10 py-3 rounded-full shadow-lg transition transform hover:scale-105 font-medium text-lg z-10">Yes</button>
-            <button id="no-btn" class="bg-white border-2 border-[#d65a77] text-[#d65a77] px-10 py-3 rounded-full shadow transition font-medium text-lg z-20">No</button>
+        <div class="flex gap-4 relative justify-center items-center w-full h-16">
+            <button onclick="playAudio('click'); nextStep(1)" class="theme-btn active:scale-95 px-8 sm:px-12 py-3 sm:py-3.5 rounded-full shadow-lg transition transform hover:scale-105 font-semibold text-base sm:text-lg z-10">Yes, Let's Go!</button>
+            <button id="no-btn" class="bg-white border-2 text-gray-600 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full shadow transition font-medium text-base sm:text-lg z-20">No</button>
         </div>
     </div>
 
     <!-- Step 1: Balloons -->
     <div id="step-1" class="step-container">
-        <h2 class="text-3xl md:text-4xl font-semibold mb-16 text-[#d65a77]">Pop all 4 balloons</h2>
+        <h2 id="balloon-title" class="text-xl sm:text-3xl md:text-4xl font-bold mb-10 sm:mb-16 theme-text px-2"></h2>
         
-        <div class="grid grid-cols-2 gap-x-12 gap-y-16 w-full max-w-sm mx-auto place-items-center">
-            <div class="relative w-full flex justify-center">
-                <div class="text-xl md:text-2xl font-bold text-[#d65a77] absolute -top-10 opacity-0 transition-opacity duration-500 z-0" id="text-1">You</div>
-                <div class="balloon bg-[#fca5a5] border-[#fca5a5] z-10" onclick="popBalloon(this, 'text-1')">
+        <div class="grid grid-cols-2 gap-x-6 sm:gap-x-12 gap-y-8 sm:gap-y-12 w-full max-w-xs sm:max-w-md mx-auto place-items-center">
+            
+            <div class="relative w-full flex flex-col items-center justify-end h-28 sm:h-36">
+                <div id="text-1" class="text-lg sm:text-2xl md:text-3xl font-extrabold theme-text opacity-0 transition-all duration-500 transform translate-y-1 mb-2 tracking-wide text-center"></div>
+                <div id="balloon-1" class="balloon z-10" onclick="popBalloon(this, 'text-1', event)">
                     <div class="balloon-string"></div>
                 </div>
             </div>
             
-            <div class="relative w-full flex justify-center">
-                <div class="text-xl md:text-2xl font-bold text-[#d65a77] absolute -top-10 opacity-0 transition-opacity duration-500 z-0" id="text-2">are</div>
-                <div class="balloon bg-[#a7f3d0] border-[#a7f3d0] z-10" onclick="popBalloon(this, 'text-2')">
+            <div class="relative w-full flex flex-col items-center justify-end h-28 sm:h-36">
+                <div id="text-2" class="text-lg sm:text-2xl md:text-3xl font-extrabold theme-text opacity-0 transition-all duration-500 transform translate-y-1 mb-2 tracking-wide text-center"></div>
+                <div id="balloon-2" class="balloon z-10" onclick="popBalloon(this, 'text-2', event)">
                     <div class="balloon-string"></div>
                 </div>
             </div>
             
-            <div class="relative w-full flex justify-center">
-                <div class="text-xl md:text-2xl font-bold text-[#d65a77] absolute -top-10 opacity-0 transition-opacity duration-500 z-0" id="text-3">so</div>
-                <div class="balloon bg-[#bfdbfe] border-[#bfdbfe] z-10" onclick="popBalloon(this, 'text-3')">
+            <div class="relative w-full flex flex-col items-center justify-end h-28 sm:h-36">
+                <div id="text-3" class="text-lg sm:text-2xl md:text-3xl font-extrabold theme-text opacity-0 transition-all duration-500 transform translate-y-1 mb-2 tracking-wide text-center"></div>
+                <div id="balloon-3" class="balloon z-10" onclick="popBalloon(this, 'text-3', event)">
                     <div class="balloon-string"></div>
                 </div>
             </div>
             
-            <div class="relative w-full flex justify-center">
-                <div class="text-xl md:text-2xl font-bold text-[#d65a77] absolute -top-10 opacity-0 transition-opacity duration-500 z-0" id="text-4">special</div>
-                <div class="balloon bg-[#ddd6fe] border-[#ddd6fe] z-10" onclick="popBalloon(this, 'text-4')">
+            <div class="relative w-full flex flex-col items-center justify-end h-28 sm:h-36">
+                <div id="text-4" class="text-lg sm:text-2xl md:text-3xl font-extrabold theme-text opacity-0 transition-all duration-500 transform translate-y-1 mb-2 tracking-wide text-center"></div>
+                <div id="balloon-4" class="balloon z-10" onclick="popBalloon(this, 'text-4', event)">
                     <div class="balloon-string"></div>
                 </div>
             </div>
+
         </div>
         
-        <button id="btn-after-balloon" onclick="nextStep(2)" class="mt-16 bg-[#d65a77] text-white px-10 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-500 pointer-events-none">Continue</button>
+        <button id="btn-after-balloon" onclick="playAudio('click'); nextStep(2)" class="mt-8 sm:mt-12 theme-btn px-8 sm:px-10 py-3 sm:py-3.5 rounded-full shadow-lg opacity-0 transition-all duration-500 pointer-events-none text-base sm:text-lg font-semibold">Continue ✨</button>
     </div>
 
-    <!-- Step 2: Candle -->
+    <!-- Step 2: Candle & Cake -->
     <div id="step-2" class="step-container">
-        <h2 class="text-3xl md:text-4xl font-semibold mb-16 text-[#d65a77]">Blow the candle, <br/> <span id="candle-name" class="cursive-text text-4xl block mt-2 text-gray-800"></span></h2>
+        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-12 theme-text">
+            Blow out the candle! 🕯️<br/> 
+            <span id="candle-name" class="cursive-text text-4xl sm:text-6xl md:text-7xl block mt-2 text-gray-800"></span>
+        </h2>
         
-        <div class="flex flex-col items-center justify-center relative w-full">
-            <div class="relative flex justify-center z-20 h-12 w-4">
-                <div id="flame" class="flame" onclick="blowCandle()"></div>
+        <div class="flex flex-col items-center justify-center relative w-full transform scale-90 sm:scale-110 md:scale-135 my-4 sm:my-8">
+            <div class="relative flex justify-center z-20 h-12 w-4" id="candle-wick-container">
+                <div id="flame" class="flame" onclick="blowCandle(event)"></div>
                 <div class="w-3 h-12 bg-gradient-to-b from-gray-100 to-gray-300 rounded shadow-sm absolute bottom-0 border border-gray-200"></div>
             </div>
-            <div class="w-40 h-16 bg-[#f9c2ff] rounded-t-xl border-b-4 border-[#e8a3ee] z-10 relative flex justify-center items-center shadow-inner">
+            
+            <div class="w-40 h-16 cake-top rounded-t-xl border-b-4 z-10 relative flex justify-center items-center shadow-inner transition-colors duration-500">
                 <div class="w-full h-4 bg-white opacity-40 rounded-full blur-[2px] absolute top-1"></div>
             </div>
-            <div class="w-56 h-20 bg-[#ff99c8] rounded-b-xl border-b-8 border-[#e67bb0] z-10 relative flex justify-around items-start pt-2 shadow-md">
-                 <div class="w-4 h-4 bg-white rounded-full opacity-70"></div>
-                 <div class="w-4 h-4 bg-white rounded-full opacity-70"></div>
-                 <div class="w-4 h-4 bg-white rounded-full opacity-70"></div>
-                 <div class="w-4 h-4 bg-white rounded-full opacity-70"></div>
+            
+            <div class="w-56 h-20 cake-bottom rounded-b-xl border-b-8 z-10 relative flex justify-around items-start pt-2 shadow-md transition-colors duration-500">
+                 <div class="w-4 h-4 cake-dot rounded-full opacity-80"></div>
+                 <div class="w-4 h-4 cake-dot rounded-full opacity-80"></div>
+                 <div class="w-4 h-4 cake-dot rounded-full opacity-80"></div>
+                 <div class="w-4 h-4 cake-dot rounded-full opacity-80"></div>
             </div>
-            <div class="w-64 h-5 bg-gray-300 rounded-[50%] mt-2 shadow-lg z-0"></div>
+            
+            <div class="w-64 h-5 bg-gray-300/80 rounded-[50%] mt-2 shadow-lg z-0"></div>
         </div>
         
-        <p id="candle-hint" class="mt-12 text-sm md:text-base text-gray-500 animate-pulse font-medium">(Tap the flame to blow it out)</p>
+        <p id="candle-hint" class="mt-8 sm:mt-12 text-xs sm:text-base text-gray-500 animate-pulse font-medium"></p>
     </div>
 
     <!-- Step 3: Bouquet -->
     <div id="step-3" class="step-container">
-        <h2 class="text-3xl font-semibold mb-10 text-[#d65a77]">Your Rose Bouquet</h2>
-        <div class="text-[8rem] md:text-[10rem] mb-12 transform hover:scale-110 transition duration-300 cursor-pointer">
+        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 theme-text">A Flower For You 💐</h2>
+        <div class="text-[6rem] sm:text-[9rem] md:text-[11rem] my-2 sm:my-4 transform hover:scale-110 active:scale-95 transition duration-300 cursor-pointer filter drop-shadow-xl animate-pulse">
             💐
         </div>
-        <button onclick="nextStep(4)" class="bg-[#d65a77] text-white px-10 py-3 rounded-full shadow-lg hover:bg-[#b5425c] transition font-medium">Continue</button>
+        <p id="bouquet-subtext" class="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base font-medium px-4"></p>
+        <button onclick="playAudio('click'); nextStep(4)" class="theme-btn px-8 sm:px-10 py-3 sm:py-3.5 rounded-full shadow-lg transition font-semibold text-base sm:text-lg">Continue ✨</button>
     </div>
 
     <!-- Step 4: Polaroids -->
     <div id="step-4" class="step-container">
-        <h2 class="text-3xl font-semibold mb-6 text-[#d65a77]">Some Sweet Moments</h2>
-        <p class="mb-10 text-gray-500 font-medium">(Tap to swipe the cards)</p>
+        <h2 id="memories-title" class="text-2xl sm:text-4xl md:text-5xl font-bold mb-1 theme-text">Sweet Memories 📸</h2>
+        <p class="mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500 font-medium">(Tap cards to swipe)</p>
         
         <div class="polaroid-stack" id="polaroid-stack">
             <!-- Cards injected via JS -->
         </div>
     </div>
 
-    <!-- Step 5: Envelope -->
+    <!-- ======================================================== -->
+    <!-- STEP 5: ENVELOPE & LETTER PAGE (FROM NEW FILE)           -->
+    <!-- ======================================================== -->
     <div id="step-5" class="step-container">
-        <h2 class="text-3xl font-semibold mb-16 text-[#d65a77]" id="envelope-title">A Message From My Heart</h2>
+        <h2 class="text-3xl md:text-5xl font-bold mb-12 sm:mb-16 theme-text" id="envelope-title">A Message From My Heart</h2>
         
         <div class="envelope-container" id="envelope" onclick="openEnvelope()">
             <div class="envelope-flap"></div>
             <div class="envelope-body"></div>
-            <div id="tap-open-text" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-700 font-semibold z-10 bg-white/70 px-4 py-1 rounded-full pointer-events-none transition-opacity duration-300">Tap to open</div>
+            <div id="tap-open-text" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-700 font-semibold z-10 bg-white/70 px-6 py-2 rounded-full pointer-events-none transition-opacity duration-300 md:text-xl">Tap to open</div>
+            
             <div class="letter">
-                <h3 id="letter-greeting" class="cursive-text text-3xl mb-2 text-[#d65a77]"></h3>
+                <h3 id="letter-greeting" class="cursive-text text-3xl md:text-4xl mb-2 theme-text"></h3>
                 
-                <!-- Letter Text Injected Here -->
                 <div id="letter-text-content" class="w-full flex-grow overflow-y-auto mb-4 px-2"></div>
                 
-                <button onclick="event.stopPropagation(); nextStep(6)" class="bg-[#d65a77] hover:bg-[#b5425c] text-white px-6 py-2 rounded-full shadow transition text-sm font-medium w-full max-w-[200px]">One Last Thing...</button>
+                <button onclick="event.stopPropagation(); playAudio('click'); nextStep(6)" class="theme-btn px-6 py-2 rounded-full shadow transition text-sm md:text-base font-medium w-full max-w-[200px] mx-auto">One Last Thing...</button>
             </div>
         </div>
     </div>
 
     <!-- Step 6: Final Gift -->
     <div id="step-6" class="step-container">
-        <h2 class="text-3xl font-semibold mb-8 text-[#d65a77]" id="final-title">One Last Thing...</h2>
-        <p class="mb-8 text-gray-500 font-medium" id="final-hint">Tap the gift</p>
+        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 theme-text" id="final-title">One Final Surprise! 🎁</h2>
+        <p class="mb-6 sm:mb-8 text-gray-500 text-xs sm:text-base font-medium" id="final-hint">Tap the gift box to unwrap</p>
         
-        <div id="gift-box" class="text-[8rem] cursor-pointer transform transition hover:scale-110 mb-8" onclick="openGift()">
+        <div id="gift-box" class="text-[7rem] sm:text-[10rem] cursor-pointer transform transition hover:scale-110 active:scale-95 my-4 sm:my-6 filter drop-shadow-xl animate-bounce" onclick="openGift()">
             🎁
         </div>
 
-        <div id="final-surprise" class="hidden flex-col items-center justify-center w-full max-w-sm">
-            <div class="bg-white p-8 rounded-2xl shadow-xl text-center mb-8 border-2 border-pink-100 w-full">
-                <!-- Final Image or Emoji -->
-                <div id="final-media-container" class="mb-4"></div>
+        <div id="final-surprise" class="hidden flex-col items-center justify-center w-full max-w-sm md:max-w-md">
+            <div class="bg-white/90 backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-2xl text-center mb-6 border border-white/50 w-full">
+                <div id="final-media-container" class="mb-3"></div>
                 
-                <h3 id="final-caption-text" class="cursive-text text-4xl text-[#d65a77] mb-4"></h3>
-                <p class="text-gray-600 font-medium">Once again, Happy Birthday! Hope you loved your surprise.</p>
+                <h3 id="final-caption-text" class="cursive-text text-3xl sm:text-4xl theme-text mb-2"></h3>
+                <p id="final-subtext" class="text-gray-600 font-medium text-xs sm:text-base leading-relaxed"></p>
             </div>
-            <button onclick="location.reload()" class="text-[#d65a77] font-semibold flex items-center justify-center gap-2 bg-white px-6 py-2 rounded-full shadow hover:bg-gray-50 transition">
-                <span>↺</span> Replay
+            <button onclick="location.reload()" class="theme-text font-semibold flex items-center justify-center gap-2 bg-white px-6 py-2.5 rounded-full shadow-md hover:bg-gray-50 transition active:scale-95 text-xs sm:text-sm">
+                <span>↺</span> Replay Celebration
             </button>
         </div>
-    </div>নিজের নাম গোপন রেখে আমাকে চিঠি পাঠাতে পারো।
-✉️ https://chithi.me/sendmeyourmsg 
+    </div>
 
 </div>
-
+<script src="config.js"></script>
 <script>
-    const birthdayConfig = [
-        {
-            // 1. Basic Details
-            name: "Shakib Hasan", 
-            gender: "boy",      // Options: "girl", "boy"
-            
-            // RELATIONS: "girlfriend", "boyfriend", "wife", "husband", "friend_girl", "friend_boy", "sister", "brother", "cousin_girl", "cousin_boy"
-            relation: "friend_boy", 
-            
-            // 2. Custom Text (Leave empty to let the system auto-generate based on relation & gender!)
-            customGreeting: "", // Leave empty ("") for auto
-            customLetterText: [], // Leave empty array [] for auto
-            customFinalCaption: "", // Leave empty ("") for auto
-            
-            // 3. Memories (Polaroid Swipes)
-            memories: [
-                { type: "image", content: "https://placehold.co/300x400/ff99c8/ffffff?text=Our+Pic+1", caption: "Beautiful Smiles" },
-                { type: "emoji", content: "🌟", caption: "Shining Bright" },
-                { type: "emoji", content: "❤️", caption: "Unforgettable" },
-                { type: "emoji", content: "🎉", caption: "Celebrating You" }
-            ],
 
-            // 4. Final Surprise Box Media (Leave content empty "" for auto-emoji based on relation)
-            finalMedia: { type: "emoji", content: "" } 
-        }
-    ];
-
+    // Auto Text Templates
     const autoTemplates = {
         "girlfriend": {
-            balloons: ["You", "are", "so", "beautiful"],
-            greeting: "My Dearest Sweety, 🥰",
+            welcomeSubText: "Are you ready for your sweet birthday surprise, my love? 💕",
+            balloonTitle: "Pop all balloons to reveal a secret! 🎈",
+            balloons: ["You", "are", "my", "everything"],
+            candleHint: "(Tap the flame to blow it out & make a wish, my queen! ✨)",
+            bouquetSubText: "May your life bloom with endless love, happiness, and sweet smiles!",
+            memoriesTitle: "Our Sweet Memories 💖",
+            greeting: "My Dearest Love, 🥰",
             letter: [
-                "Happy Birthday to the most beautiful girl in my life!",
-                "You are sweet, loyal, my rock, and I'm so grateful to have you in my life.",
-                "Every moment spent with you is a blessing. May this year bring you countless beautiful moments."
+                "Happy Birthday to the most beautiful girl who stole my heart and fills every moment with pure joy!",
+                "Your smile is my favorite thing in the world, and your kindness inspires me every single day.",
+                "Thank you for being my love, my best friend, and my happy place. Here's to making countless more beautiful memories together!"
             ],
-            finalCaption: "Lots of love for you, forever! 💖",
+            finalTitle: "One Last Gift For My Queen 🎁",
+            finalCaption: "I love you more than words can say, forever! 💖",
+            finalSubtext: "Hope your day is as bright and wonderful as your beautiful smile!",
             finalEmoji: "👩‍❤️‍👨💍💖"
         },
         "boyfriend": {
-            balloons: ["You", "are", "so", "handsome"],
-            greeting: "My Handsome Prince, 👑",
+            welcomeSubText: "Ready for your special birthday surprise, handsome? 👑",
+            balloonTitle: "Pop all balloons to unlock the magic! 🎈",
+            balloons: ["You", "are", "my", "hero"],
+            candleHint: "(Tap the flame to blow it out & make a wish, my prince! ✨)",
+            bouquetSubText: "Wishing you a life full of grandeur, happiness, and incredible wins!",
+            memoriesTitle: "Unforgettable Times 📸",
+            greeting: "To My Handsome Prince, 👑",
             letter: [
-                "Happy Birthday to my amazing man!",
-                "You make me feel so safe, loved, and cherished every single day.",
-                "I am so lucky to have you. Let's make this year unforgettable."
+                "Happy Birthday to the most incredible man in my life!",
+                "Thank you for always being my rock, protecting me, and making me feel safe and cherished every day.",
+                "I am so proud of the man you are. May this year bring you closer to all your dreams and passions!"
             ],
-            finalCaption: "Yours always! ❤️",
+            finalTitle: "A Gift For My Favorite Man 🎁",
+            finalCaption: "Forever & always yours! ❤️",
+            finalSubtext: "Wishing you an epic year packed with success and happiness!",
             finalEmoji: "🦸‍♂️❤️🎮"
         },
-        "wife": {
-            balloons: ["My", "Beautiful", "Wife", "❤️"],
-            greeting: "To my gorgeous Wife, 💍",
+        "friend_boy": {
+            welcomeSubText: "Ready to celebrate your birthday like a total boss? 👊",
+            balloonTitle: "Pop all balloons to unlock the cheer! 🎈",
+            balloons: [" You ", "are", "a", "legend"],
+            candleHint: "(Blow out the flame, champ! Make a wish! ✨)",
+            bouquetSubText: "May your journey ahead be wild, successful, and filled with victories!",
+            memoriesTitle: "Epic Memories & Madness 📸",
+            greeting: "Hey Bro! 👊",
             letter: [
-                "Happy Birthday to the queen of my heart!",
-                "Thank you for being my life partner and my best friend. You make our house a home.",
-                "I love you more than words can express."
+                "Happy Birthday brother! Another year bolder, wiser, and more legendary!",
+                "Thanks for all the crazy laughs, late-night talks, and always having my back no matter what.",
+                "Hope this year brings you huge wins, good health, and unforgettable adventures!"
             ],
-            finalCaption: "Love you to the moon & back! 💞",
-            finalEmoji: "💐💍👩‍❤️‍👨"
-        },
-        "husband": {
-            balloons: ["My", "Amazing", "Husband", "❤️"],
-            greeting: "To my wonderful Husband, 🤵",
-            letter: [
-                "Happy Birthday to my rock and my protector!",
-                "Life with you is a beautiful adventure. Thank you for everything you do for us.",
-                "Wishing you all the happiness in the world."
-            ],
-            finalCaption: "Forever yours! 💖",
-            finalEmoji: "🥳🤵‍♂️❤️"
+            finalTitle: "Unwrap Your Birthday Box 🎁",
+            finalCaption: "Cheers to an epic year ahead, bro! 🎉",
+            finalSubtext: "Hope you have an absolutely legendary day today!",
+            finalEmoji: "🥳😎👊"
         },
         "friend_girl": {
-            balloons: ["You", "are", "so", "awesome"],
+            welcomeSubText: "Ready for a fabulous birthday surprise, bestie? 🌸",
+            balloonTitle: "Pop all balloons to reveal the magic! 🎈",
+            balloons: [" You ", "are", "so", "fabulous"],
+            candleHint: "(Tap the flame, make a wish & blow it out! ✨)",
+            bouquetSubText: "May your life bloom with beauty, joy, and bright smiles!",
+            memoriesTitle: "Our Favorite Times 🌸",
             greeting: "Hey Bestie! 🌸",
             letter: [
                 "Happy Birthday to my favorite partner in crime!",
-                "Life is so much more fun with you around. Thank you for always listening to my drama.",
-                "Have a blast today, you deserve it!"
+                "Life is so much brighter, happier, and more hilarious with you around.",
+                "Keep shining bright, chasing your dreams, and spreading good vibes wherever you go!"
             ],
-            finalCaption: "Best friends forever! 🎉",
+            finalTitle: "A Gift For My Bestie 🎁",
+            finalCaption: "Best friends forever! 🎉🌸",
+            finalSubtext: "Hope your day is packed with sweet treats and endless fun!",
             finalEmoji: "🌸👯‍♀️🛍️"
-        },
-        "friend_boy": {
-            balloons: ["You", "are", "a", "rockstar"],
-            greeting: "Hey Bro! 👊",
-            letter: [
-                "Happy Birthday brother!",
-                "Cheers to all the crazy memories we've made and the ones yet to come.",
-                "Hope you have an absolutely epic day today!"
-            ],
-            finalCaption: "Best wishes to you bro! 🎉",
-            finalEmoji: "🥳😎👊"
-        },
-        "sister": {
-            balloons: ["Best", "Sister", "Ever", "💖"],
-            greeting: "Dearest Sister, 🎀",
-            letter: [
-                "Happy Birthday to the best sister in the world!",
-                "We might fight sometimes, but you know I love you the most.",
-                "May all your dreams come true this year!"
-            ],
-            finalCaption: "Love you sis! 💝",
-            finalEmoji: "👭💅🛍️"
-        },
-        "brother": {
-            balloons: ["Best", "Brother", "Ever", "💙"],
-            greeting: "Dearest Brother, 🎮",
-            letter: [
-                "Happy Birthday bro!",
-                "Thanks for always having my back (and for all the fights too haha).",
-                "Have a great birthday, enjoy your day!"
-            ],
-            finalCaption: "Love you bro! 💥",
-            finalEmoji: "🎮🦸‍♂️🍔"
-        },
-        "cousin_girl": {
-            balloons: ["Awesome", "Cousin", "Ever", "🌟"],
-            greeting: "Dear Cousin, ✨",
-            letter: [
-                "Happy Birthday to my sweet cousin!",
-                "Family gatherings are only fun because you are there.",
-                "Hope you have a fantastic birthday filled with joy."
-            ],
-            finalCaption: "Lots of love! 🌸",
-            finalEmoji: "🌟💖🥳"
-        },
-        "cousin_boy": {
-            balloons: ["Awesome", "Cousin", "Ever", "🌟"],
-            greeting: "Dear Cousin, ✌️",
-            letter: [
-                "Happy Birthday to an awesome cousin!",
-                "Hope your special day is packed with fun and great memories.",
-                "Let's catch up soon. Enjoy your day!"
-            ],
-            finalCaption: "Have a blast! 🎉",
-            finalEmoji: "✌️😎🎮"
         }
     };
 
+    // Dynamic Color Psychology Matrix
+    function applyColorPsychology(gender, relation) {
+        const root = document.documentElement;
+        
+        if (gender === "boy") {
+            if (relation === "boyfriend" || relation === "husband") {
+                root.style.setProperty('--primary', '#be123c');
+                root.style.setProperty('--primary-hover', '#9f1239');
+                root.style.setProperty('--text-primary', '#9f1239');
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)');
+                root.style.setProperty('--env-base', '#f43f5e');
+                root.style.setProperty('--env-flap', '#e11d48');
+                root.style.setProperty('--env-body', '#fb7185');
+                root.style.setProperty('--balloon-1', '#fda4af');
+                root.style.setProperty('--balloon-2', '#93c5fd');
+                root.style.setProperty('--balloon-3', '#c084fc');
+                root.style.setProperty('--balloon-4', '#fde047');
+
+                root.style.setProperty('--cake-top-bg', '#fef3c7');
+                root.style.setProperty('--cake-top-border', '#f59e0b');
+                root.style.setProperty('--cake-bottom-bg', '#be123c');
+                root.style.setProperty('--cake-bottom-border', '#881337');
+                root.style.setProperty('--cake-dots', '#ffffff');
+            } else {
+                root.style.setProperty('--primary', '#2563eb');
+                root.style.setProperty('--primary-hover', '#1d4ed8');
+                root.style.setProperty('--text-primary', '#1e40af');
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)');
+                root.style.setProperty('--env-base', '#3b82f6');
+                root.style.setProperty('--env-flap', '#2563eb');
+                root.style.setProperty('--env-body', '#60a5fa');
+                root.style.setProperty('--balloon-1', '#60a5fa');
+                root.style.setProperty('--balloon-2', '#34d399');
+                root.style.setProperty('--balloon-3', '#a78bfa');
+                root.style.setProperty('--balloon-4', '#fbbf24');
+
+                root.style.setProperty('--cake-top-bg', '#e0f2fe');
+                root.style.setProperty('--cake-top-border', '#38bdf8');
+                root.style.setProperty('--cake-bottom-bg', '#2563eb');
+                root.style.setProperty('--cake-bottom-border', '#1d4ed8');
+                root.style.setProperty('--cake-dots', '#ffffff');
+            }
+        } else {
+            if (relation === "girlfriend" || relation === "wife") {
+                root.style.setProperty('--primary', '#e11d48');
+                root.style.setProperty('--primary-hover', '#be123c');
+                root.style.setProperty('--text-primary', '#be123c');
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)');
+                root.style.setProperty('--env-base', '#fb7185');
+                root.style.setProperty('--env-flap', '#f43f5e');
+                root.style.setProperty('--env-body', '#fda4af');
+                root.style.setProperty('--balloon-1', '#fda4af');
+                root.style.setProperty('--balloon-2', '#f472b6');
+                root.style.setProperty('--balloon-3', '#c084fc');
+                root.style.setProperty('--balloon-4', '#fde047');
+
+                root.style.setProperty('--cake-top-bg', '#fce7f3');
+                root.style.setProperty('--cake-top-border', '#f472b6');
+                root.style.setProperty('--cake-bottom-bg', '#e11d48');
+                root.style.setProperty('--cake-bottom-border', '#be123c');
+                root.style.setProperty('--cake-dots', '#ffffff');
+            } else {
+                root.style.setProperty('--primary', '#9333ea');
+                root.style.setProperty('--primary-hover', '#7e22ce');
+                root.style.setProperty('--text-primary', '#7e22ce');
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)');
+                root.style.setProperty('--env-base', '#a855f7');
+                root.style.setProperty('--env-flap', '#9333ea');
+                root.style.setProperty('--env-body', '#c084fc');
+                root.style.setProperty('--balloon-1', '#c084fc');
+                root.style.setProperty('--balloon-2', '#f472b6');
+                root.style.setProperty('--balloon-3', '#818cf8');
+                root.style.setProperty('--balloon-4', '#34d399');
+
+                root.style.setProperty('--cake-top-bg', '#f3e8ff');
+                root.style.setProperty('--cake-top-border', '#c084fc');
+                root.style.setProperty('--cake-bottom-bg', '#9333ea');
+                root.style.setProperty('--cake-bottom-border', '#7e22ce');
+                root.style.setProperty('--cake-dots', '#ffffff');
+            }
+        }
+
+        document.getElementById('balloon-1').style.backgroundColor = getComputedStyle(root).getPropertyValue('--balloon-1');
+        document.getElementById('balloon-2').style.backgroundColor = getComputedStyle(root).getPropertyValue('--balloon-2');
+        document.getElementById('balloon-3').style.backgroundColor = getComputedStyle(root).getPropertyValue('--balloon-3');
+        document.getElementById('balloon-4').style.backgroundColor = getComputedStyle(root).getPropertyValue('--balloon-4');
+    }
+
+    // Audio Synthesizer
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playAudio(type) {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'pop') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.08);
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'click') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        } else if (type === 'win') {
+            const notes = [400, 500, 600, 800];
+            notes.forEach((freq, index) => {
+                const noteOsc = audioCtx.createOscillator();
+                const noteGain = audioCtx.createGain();
+                noteOsc.connect(noteGain);
+                noteGain.connect(audioCtx.destination);
+                noteOsc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.1);
+                noteGain.gain.setValueAtTime(0.2, audioCtx.currentTime + index * 0.1);
+                noteGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + index * 0.1 + 0.2);
+                noteOsc.start(audioCtx.currentTime + index * 0.1);
+                noteOsc.stop(audioCtx.currentTime + index * 0.1 + 0.2);
+            });
+        }
+    }
+
+    function createSparkles() {
+        const container = document.getElementById('sparkle-container');
+        for(let i = 0; i < 15; i++) {
+            const el = document.createElement('div');
+            el.className = 'bg-sparkle';
+            const size = Math.random() * 8 + 4;
+            el.style.width = size + 'px';
+            el.style.height = size + 'px';
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.top = Math.random() * 100 + 'vh';
+            el.style.animationDelay = (Math.random() * 5) + 's';
+            container.appendChild(el);
+        }
+    }
+    createSparkles();
+
+    // Data Binding
     const data = birthdayConfig[0];
-    const template = autoTemplates[data.relation] || autoTemplates["friend_girl"]; // fallback
+    const template = autoTemplates[data.relation] || autoTemplates["friend_girl"];
     
-    // Set Basic Details
+    applyColorPsychology(data.gender, data.relation);
+
     document.getElementById('welcome-name').innerText = data.name;
-    document.getElementById('candle-name').innerText = data.name;
+    document.getElementById('welcome-subtext').innerText = template.welcomeSubText;
     
-    // Set Balloons Text
+    document.getElementById('balloon-title').innerText = template.balloonTitle;
     document.getElementById('text-1').innerText = template.balloons[0];
     document.getElementById('text-2').innerText = template.balloons[1];
     document.getElementById('text-3').innerText = template.balloons[2];
     document.getElementById('text-4').innerText = template.balloons[3];
 
-    // Set Letter Text
+    document.getElementById('candle-name').innerText = data.name;
+    document.getElementById('candle-hint').innerText = template.candleHint;
+
+    document.getElementById('bouquet-subtext').innerText = template.bouquetSubText;
+    document.getElementById('memories-title').innerText = template.memoriesTitle;
+
     document.getElementById('letter-greeting').innerText = data.customGreeting || template.greeting;
     
     const letterTextContainer = document.getElementById('letter-text-content');
-    const paragraphs = data.customLetterText.length > 0 ? data.customLetterText : template.letter;
+    const paragraphs = (data.customLetterText && data.customLetterText.length > 0) ? data.customLetterText : template.letter;
     paragraphs.forEach(paragraph => {
-        letterTextContainer.innerHTML += `<p class="text-gray-700 text-sm md:text-base mb-2 leading-relaxed">${paragraph}</p>`;
+        letterTextContainer.innerHTML += `<p class="text-gray-700 text-xs sm:text-base mb-3 leading-relaxed">${paragraph}</p>`;
     });
 
-    // Set Memories/Polaroids
+    document.getElementById('final-title').innerText = template.finalTitle;
+    document.getElementById('final-caption-text').innerText = data.customFinalCaption || template.finalCaption;
+    document.getElementById('final-subtext').innerText = template.finalSubtext;
+
+    // Polaroids Stack
     const stackContainer = document.getElementById('polaroid-stack');
     data.memories.reverse().forEach((card, index) => {
         const cardEl = document.createElement('div');
         cardEl.className = 'polaroid';
-        const rot = (Math.random() - 0.5) * 12; 
+        const rot = (Math.random() - 0.5) * 10; 
         cardEl.style.transform = `rotate(${rot}deg)`;
         cardEl.style.zIndex = index + 1;
         
-        let mediaHTML = '';
-        if(card.type === 'image') {
-            mediaHTML = `<img src="${card.content}" alt="Memory" class="w-full h-full object-cover">`;
-        } else {
-            mediaHTML = `<div class="text-[5rem]">${card.content}</div>`;
-        }
+        let mediaHTML = (card.type === 'image') 
+            ? `<img src="${card.content}" alt="Memory" class="w-full h-full object-cover">`
+            : `<div class="text-[4rem] sm:text-[5rem]">${card.content}</div>`;
         
         cardEl.innerHTML = `
             <div class="polaroid-img">${mediaHTML}</div>
@@ -610,15 +869,13 @@
         stackContainer.appendChild(cardEl);
     });
 
-    // Set Final Surprise
-    document.getElementById('final-caption-text').innerText = data.customFinalCaption || template.finalCaption;
+    // Final Media
     const finalMediaContainer = document.getElementById('final-media-container');
-    
     if(data.finalMedia.type === 'image' && data.finalMedia.content !== "") {
-        finalMediaContainer.innerHTML = `<img src="${data.finalMedia.content}" class="w-32 h-32 rounded-lg object-cover mx-auto">`;
+        finalMediaContainer.innerHTML = `<img src="${data.finalMedia.content}" class="w-28 h-28 sm:w-32 sm:h-32 rounded-xl object-cover mx-auto shadow-md">`;
     } else {
         const displayEmoji = (data.finalMedia.content !== "") ? data.finalMedia.content : template.finalEmoji;
-        finalMediaContainer.innerHTML = `<div class="text-6xl">${displayEmoji}</div>`;
+        finalMediaContainer.innerHTML = `<div class="text-5xl sm:text-6xl my-2">${displayEmoji}</div>`;
     }
 
     function nextStep(stepIndex) {
@@ -627,8 +884,11 @@
         
         const targetStep = document.getElementById(`step-${stepIndex}`);
         if(targetStep) targetStep.classList.add('step-active');
+
+        if(stepIndex === 3) startPetals();
     }
 
+    // Playful No Button Logic
     const noBtn = document.getElementById('no-btn');
     const moveBtn = (e) => {
         e.preventDefault();
@@ -640,19 +900,25 @@
     };
     noBtn.addEventListener('mouseover', moveBtn);
     noBtn.addEventListener('touchstart', moveBtn, {passive: false});
-    noBtn.addEventListener('click', (e) => {
-        noBtn.innerText = "Please? 🥺";
-        moveBtn(e);
-    });
 
+    // Balloon Pop Logic
     let balloonsPopped = 0;
-    function popBalloon(element, textId) {
+    function popBalloon(element, textId, event) {
         if(element.style.opacity === '0') return;
-        element.style.transform = 'scale(0)';
+        
+        playAudio('pop');
+        createParticles(event.clientX, event.clientY);
+
+        element.style.transform = 'scale(0.1)';
         element.style.opacity = '0';
-        document.getElementById(textId).style.opacity = '1';
+        
+        const textEl = document.getElementById(textId);
+        textEl.style.opacity = '1';
+        textEl.style.transform = 'scale(1.08) translateY(-2px)';
+        
         balloonsPopped++;
         if (balloonsPopped === 4) {
+            setTimeout(() => playAudio('win'), 300);
             const nextBtn = document.getElementById('btn-after-balloon');
             nextBtn.style.opacity = '1';
             nextBtn.style.pointerEvents = 'auto';
@@ -660,36 +926,98 @@
         }
     }
 
-    function blowCandle() {
+    function createParticles(x, y) {
+        const colors = ['#fca5a5', '#a7f3d0', '#bfdbfe', '#ddd6fe', '#fcd34d'];
+        for(let i = 0; i < 16; i++) {
+            const p = document.createElement('div');
+            p.className = 'pop-particle';
+            p.style.left = x + 'px';
+            p.style.top = y + 'px';
+            p.style.width = (Math.random() * 8 + 4) + 'px';
+            p.style.height = p.style.width;
+            p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 80 + 30;
+            p.style.setProperty('--dx', Math.cos(angle) * velocity + 'px');
+            p.style.setProperty('--dy', Math.sin(angle) * velocity + 'px');
+            
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+    }
+
+    // Candle Blowing Logic
+    function blowCandle(event) {
         const flame = document.getElementById('flame');
         const hint = document.getElementById('candle-hint');
+        const wickContainer = document.getElementById('candle-wick-container');
+
         if (flame.classList.contains('blown-out')) return;
+
+        playAudio('pop');
         flame.classList.add('blown-out');
-        hint.innerText = "Yay! Make a wish... ✨";
-        setTimeout(() => nextStep(3), 2500);
+
+        for(let i = 0; i < 6; i++) {
+            setTimeout(() => {
+                const smoke = document.createElement('div');
+                smoke.className = 'smoke';
+                const drift = (Math.random() - 0.5) * 6;
+                smoke.style.marginLeft = drift + 'px';
+                wickContainer.appendChild(smoke);
+                setTimeout(() => smoke.remove(), 2000);
+            }, i * 140);
+        }
+
+        hint.innerText = "Yay! Wish granted ✨";
+        setTimeout(() => {
+            playAudio('win');
+            nextStep(3);
+        }, 2000);
+    }
+
+    function startPetals() {
+        for(let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = (Math.random() * 12 + 8) + 'px';
+                petal.style.height = (Math.random() * 12 + 8) + 'px';
+                petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                document.body.appendChild(petal);
+                setTimeout(() => petal.remove(), 6000);
+            }, i * 300);
+        }
     }
 
     let cardsSwiped = 0;
     function swipeCard(card) {
         if (card.classList.contains('swipe-out')) return;
+        playAudio('click');
         card.classList.add('swipe-out');
         cardsSwiped++;
+        
         if (cardsSwiped === data.memories.length) {
             setTimeout(() => {
                 document.getElementById('polaroid-stack').innerHTML = `
                     <div class="w-full h-full flex justify-center items-center">
-                        <button onclick="nextStep(5)" class="bg-[#d65a77] text-white px-10 py-3 rounded-full shadow-lg animate-pulse font-medium">Read Message</button>
+                        <button onclick="playAudio('click'); nextStep(5)" class="theme-btn px-10 py-3.5 rounded-full shadow-lg animate-pulse font-semibold text-lg">Read Message ✉️</button>
                     </div>`;
-            }, 600);
+            }, 500);
         }
     }
 
+    // ========================================================
+    // ENVELOPE OPEN LOGIC (FROM NEW FILE INTEGRATION)
+    // ========================================================
     function openEnvelope() {
         const envelope = document.getElementById('envelope');
         const tapText = document.getElementById('tap-open-text');
         const step5Title = document.getElementById('envelope-title');
         
         if (!envelope.classList.contains('open')) {
+            playAudio('click');
             envelope.classList.add('open');
             tapText.style.opacity = '0';
             
@@ -704,6 +1032,7 @@
     }
 
     function openGift() {
+        playAudio('win');
         document.getElementById('gift-box').style.display = 'none';
         document.getElementById('final-title').style.display = 'none';
         document.getElementById('final-hint').style.display = 'none';
@@ -714,16 +1043,16 @@
 
     function createConfetti() {
         const colors = ['#fca5a5', '#fcd34d', '#a7f3d0', '#bfdbfe', '#ddd6fe', '#ff99c8'];
-        for (let i = 0; i < 70; i++) {
+        for (let i = 0; i < 80; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.top = '-20px';
+            confetti.style.top = '-10px';
             confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            confetti.style.animationDelay = (Math.random() * 2) + 's';
+            confetti.style.animationDuration = (Math.random() * 3 + 2.5) + 's';
+            confetti.style.animationDelay = (Math.random() * 1.5) + 's';
             confetti.style.opacity = Math.random() + 0.5;
-            const size = (Math.random() * 10 + 6) + 'px';
+            const size = (Math.random() * 8 + 6) + 'px';
             confetti.style.width = size;
             confetti.style.height = size;
             if(Math.random() > 0.5) confetti.style.borderRadius = '50%';
