@@ -1,9 +1,9 @@
  // Configuration
     const birthdayConfig = [
         {
-            name: "samia hhasan", 
-            gender: "girl",      // Options: "girl", "boy"
-            relation: "girlfriend", // Options: "girlfriend", "boyfriend", "wife", "husband", "friend_girl", "friend_boy", "sister", "brother", "cousin_girl", "cousin_boy"
+            name: "Shakib Hasan", 
+            gender: "boy",      // Options: "girl", "boy"
+            relation: "friend_boy", // Options: "girlfriend", "boyfriend", "wife", "husband", "friend_girl", "friend_boy", "sister", "brother", "cousin_girl", "cousin_boy"
             
             customGreeting: "", 
             customLetterText: [], 
