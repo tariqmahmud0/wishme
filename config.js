@@ -10,7 +10,8 @@
             customFinalCaption: "", 
             
             memories: [
-                { type: "image", content: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&auto=format&fit=crop", caption: "Unforgettable Moments" },
+                { type: "text", content: "আমাদের তেমন কোনো স্মৃতি নেই, সামান্য শব্দ বিনিময় ছাড়া।
+", caption: " " },
                 { type: "emoji", content: "🌟", caption: "Shining Bright" },
                 { type: "emoji", content: "🎉", caption: "Pure Joy" },
                 { type: "emoji", content: "👑", caption: "Legendary" }
