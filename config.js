@@ -3,7 +3,7 @@
         {
             name: "Samia Akter Juthi", 
             gender: "girl",      // Options: "girl", "boy"
-            relation: "girlfriend", // Options: "girlfriend", "boyfriend", "wife", "husband", "friend_girl", "friend_boy", "sister", "brother", "cousin_girl", "cousin_boy"
+            relation: "friend_girl", // Options: "girlfriend", "boyfriend", "wife", "husband", "friend_girl", "friend_boy", "sister", "brother", "cousin_girl", "cousin_boy"
             
             customGreeting: "", 
             customLetterText: [], 
